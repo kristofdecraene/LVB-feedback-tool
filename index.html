@@ -117,6 +117,15 @@
             box-sizing: border-box;
             font-size: 14px;
         }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: normal;
+            font-size: 0.9em;
+            margin-bottom: 8px;
+            color: #475569;
+        }
         .help-text {
             font-size: 0.85em;
             color: #64748b;
@@ -484,7 +493,11 @@
             <span class="help-text">Sla PowerPoint/Keynote eerst op als PDF via 'Opslaan als' > PDF.</span>
         </div>
         <div class="form-group">
-            <label>Werkblad / Werkbundel (WB)</label>
+            <label id="wbLabel">Werkblad / Werkbundel (WB)</label>
+            <label class="checkbox-container">
+                <input type="checkbox" id="noCustomWB" onchange="toggleWBRequirement()">
+                Geen eigen werkblad (student gebruikt leerwerkboek / werkblad mentor)
+            </label>
             <input type="file" id="fileWB" accept="application/pdf">
         </div>
         <button id="generateBtn" onclick="generateFeedback()">Genereer Bewerkbaar Feedbackrapport</button>
@@ -549,6 +562,15 @@
         const sel = document.getElementById("evaluatorSelect").value;
         const customInput = document.getElementById("customEvaluator");
         customInput.style.display = (sel === "custom") ? "block" : "none";
+    }
+
+    function toggleWBRequirement() {
+        const wbLabel = document.getElementById("wbLabel");
+        if(document.getElementById("noCustomWB").checked) {
+            wbLabel.innerHTML = 'Werkblad / Werkbundel (WB) <span class="optional-tag">(optioneel / ingescand handboek)</span>';
+        } else {
+            wbLabel.innerHTML = 'Werkblad / Werkbundel (WB)';
+        }
     }
 
     function getEvaluatorName() {
@@ -772,6 +794,8 @@
         const evaluatorName = getEvaluatorName();
         const studentNameInput = document.getElementById("studentName").value.trim();
         const teacherNotes = document.getElementById("teacherNotes").value.trim();
+        
+        const noCustomWB = document.getElementById("noCustomWB").checked;
         const fileLV = document.getElementById("fileLV").files[0];
         const filePPT = document.getElementById("filePPT").files[0];
         const fileWB = document.getElementById("fileWB").files[0];
@@ -783,7 +807,8 @@
         const resultContent = document.getElementById("result-content");
 
         if(!apiKey) return alert("Vul alsjeblieft je Gemini API Key in.");
-        if(!fileLV || !filePPT || !fileWB) return alert("Upload alle 3 de bestanden (Lesvoorbereiding, Presentatie, Werkblad) als PDF.");
+        if(!fileLV || !filePPT) return alert("Upload minstens de Lesvoorbereiding en Presentatie als PDF.");
+        if(!noCustomWB && !fileWB) return alert("Upload alle 3 de bestanden (LV, PPT, WB). Vink de optie 'Geen eigen werkblad' aan als de student materiaal van de mentor gebruikt.");
 
         localStorage.setItem("vivesGeminiKey", apiKey);
 
@@ -797,7 +822,10 @@
         try {
             const b64_LV = await fileToBase64(fileLV);
             const b64_PPT = await fileToBase64(filePPT);
-            const b64_WB = await fileToBase64(fileWB);
+            let b64_WB = "";
+            if (fileWB) {
+                b64_WB = await fileToBase64(fileWB);
+            }
 
             const studentContextRule = studentNameInput 
                 ? `De opgegeven naam van de student is: "${studentNameInput}". Gebruik deze naam.`
@@ -806,6 +834,10 @@
             const teacherNotesRule = teacherNotes
                 ? `BELANGRIJKE OBSERVATIES VAN DE BEOORDELENDE DOCENT (${evaluatorName}):\n"${teacherNotes}"\nVerwerk deze specifieke opmerkingen van de docent verplicht en naadloos op de juiste plekken in je feedback!`
                 : `Geen extra voorafgaande docentnotities opgegeven.`;
+
+            const wbContextRule = noCustomWB
+                ? `BELANGRIJK OVER HET WERKBLAD: De student mocht geen eigen werkblad ontwerpen en gebruikt verplicht het leerwerkboek of materiaal van de mentor. Reken de student NIET af op de VIVES-ontwerpeisen voor een eigen werkblad (zoals bindteksten of onderzoeksvraag bovenaan). Beoordeel bij punt 7 (Het Werkblad) enkel hoe de student dit bestaande materiaal didactisch inzet (of benoem het als 'Niet van toepassing' indien er geen bijlage is geüpload).`
+                : `Geen uitzondering voor het werkblad (beoordeel strikt volgens Fiche 8).`;
 
             const systemInstruction = `Jij bent een coachende, motiverende vakdidacticus geschiedenis en stagebegeleider aan VIVES Hogeschool (je schrijft namens docent ${evaluatorName}). Je geeft formatieve, opbouwende feedback op draftversies van lesvoorbereidingen zodat de student het lesmateriaal kan versterken vóór de definitieve indiening.
 
@@ -821,6 +853,7 @@
             SPECIFIEKE REGEL VOOR MICROTEACHING & DOCENTINVOER:
             - ${studentContextRule}
             - ${teacherNotesRule}
+            - ${wbContextRule}
             - Belangrijk: Bij microteaching geven studenten les aan medestudenten. Ze hoeven dan GEEN stageschool, stagementor, klasprofiel of lokaaluitrusting in te vullen in de hoofding van hun lesvoorbereiding. Reken hen dus NOOIT af op ontbrekende school-, klas- of lokaalgegevens!
 
             Niveaubepaling & Kalibratie (Context: ${stageLevel}):
@@ -900,20 +933,25 @@
             * **Tijd- en ruimtesituering:** [Specifieke feedback op kaart/tijdlijn]
             * **Taalverzorging & Lay-out:** [Specifieke spel- of tikfouten met exact paginanummer/dianummer vermelden]`;
 
+            const payloadParts = [
+                { text: `Hier is het studentendossier. Context: ${stageLevel}. Opgegeven naam: ${studentNameInput || 'Haal uit PDF'}. Docentnotities: ${teacherNotes || 'Geen'}.\nBestand 1 (Lesvoorbereiding):` },
+                { inlineData: { mimeType: "application/pdf", data: b64_LV } },
+                { text: `Bestand 2 (Presentatie):` },
+                { inlineData: { mimeType: "application/pdf", data: b64_PPT } }
+            ];
+
+            if (b64_WB) {
+                payloadParts.push({ text: `Bestand 3 (Werkblad / Leerwerkboek):` });
+                payloadParts.push({ inlineData: { mimeType: "application/pdf", data: b64_WB } });
+            } else {
+                payloadParts.push({ text: `Bestand 3 (Werkblad): Niet geüpload (student gebruikt leerwerkboek/werkblad van de mentor).` });
+            }
+
+            payloadParts.push({ text: `Evalueer dit studentendossier grondig en start met META_STUDENT, META_ONDERWERP en META_OV gevolgd door de aanspreking en de 9-delige structuur met [STERK], [VERFIJNING] of [WERKPUNT].` });
+
             const payload = {
                 systemInstruction: { parts: [{ text: systemInstruction }] },
-                contents: [{
-                    role: "user",
-                    parts: [
-                        { text: `Hier is het studentendossier. Context: ${stageLevel}. Opgegeven naam: ${studentNameInput || 'Haal uit PDF'}. Docentnotities: ${teacherNotes || 'Geen'}.\nBestand 1 (Lesvoorbereiding):` },
-                        { inlineData: { mimeType: "application/pdf", data: b64_LV } },
-                        { text: `Bestand 2 (Presentatie):` },
-                        { inlineData: { mimeType: "application/pdf", data: b64_PPT } },
-                        { text: `Bestand 3 (Werkblad):` },
-                        { inlineData: { mimeType: "application/pdf", data: b64_WB } },
-                        { text: `Evalueer dit studentendossier grondig en start met META_STUDENT, META_ONDERWERP en META_OV gevolgd door de aanspreking en de 9-delige structuur met [STERK], [VERFIJNING] of [WERKPUNT].` }
-                    ]
-                }],
+                contents: [{ role: "user", parts: payloadParts }],
                 generationConfig: { temperature: 0.2 } 
             };
 
