@@ -123,6 +123,24 @@
             display: block;
             margin-top: 4px;
         }
+        .info-box {
+            background-color: #eff6ff;
+            border-left: 4px solid var(--vives-navy);
+            padding: 12px 14px;
+            margin-top: 10px;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.88em;
+            color: #334155;
+            line-height: 1.45;
+        }
+        .info-box a {
+            color: var(--vives-navy);
+            font-weight: 700;
+            text-decoration: underline;
+        }
+        .info-box a:hover {
+            color: var(--vives-navy-light);
+        }
         button {
             background-color: var(--vives-navy);
             color: white;
@@ -411,6 +429,13 @@
         <div class="form-group">
             <label for="apiKey">Jouw Gemini API Key</label>
             <input type="password" id="apiKey" placeholder="Plak hier je Google Gemini API Key...">
+            
+            <div class="info-box">
+                <strong>Hoe maak je een gratis API-sleutel aan?</strong><br>
+                1. Klik op <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer">maak je eigen API-key aan in Google AI Studio</a>.<br>
+                2. Log in met een Google-account. <em>(Blokkeert je VIVES-mail de toegang? Gebruik dan een persoonlijk @gmail.com account!)</em><br>
+                3. Klik op de blauwe knop 'Create API key' en plak de gekopieerde sleutel hierboven. Je sleutel wordt uitsluitend lokaal in jouw browser bewaard.
+            </div>
         </div>
         
         <div class="form-row">
@@ -456,6 +481,7 @@
         <div class="form-group">
             <label>Lespresentatie (PPT)</label>
             <input type="file" id="filePPT" accept="application/pdf">
+            <span class="help-text">Sla PowerPoint/Keynote eerst op als PDF via 'Opslaan als' > PDF.</span>
         </div>
         <div class="form-group">
             <label>Werkblad / Werkbundel (WB)</label>
@@ -686,7 +712,7 @@
         return container.innerHTML;
     }
 
-    // Robuuste API-aanroep (ongewijzigd)
+    // Robuuste API-aanroep (volledig ongewijzigd)
     async function callGeminiWithRetry(apiKey, payload) {
         const loadingText = document.getElementById("loading-text");
         const primaryModel = "models/gemini-3.8-flash";
@@ -803,7 +829,11 @@
             - STAGE 3: Daag uit als beginnende collega. Verwacht vakdidactische diepgang, scherpe historische nuance en strikte toepassing van de 35-puntenchecklist.
 
             VIVES-didactiek referentiekader (gebruik als meetlat):
-            - Fiche 2: Inhoudelijke expertise; correct onderscheid primaire/secundaire bronnen; minstens 2 werken in literatuurlijst.
+            - Fiche 2 (Inhoudelijke Expertise & Bronnen): Beoordeel de inhoudelijke expertise én het correcte onderscheid tussen primaire en secundaire bronnen in de les. Controleer daarnaast in de literatuurlijst van de lesvoorbereiding verplicht en expliciet deze 4 subcriteria:
+              (A) Of er voldoende bronnen aanwezig zijn;
+              (B) Of er voldoende leermethodes (schoolhandboeken geschiedenis, minstens 2 volgens Fiche 2) geconsulteerd zijn;
+              (C) Of de geraadpleegde bronnen voldoende kwalitatief en wetenschappelijk/vakdidactisch betrouwbaar zijn (geen vluchtige fora, Pinterest, Reddit of louter AI);
+              (D) Of de bronnen en leermethodes correct volgens de APA-normen genoteerd staan.
             - Fiche 3: Uitdagende onderzoeksvraag (geen ja/nee) in eigen woorden, 1-op-1 identiek geformuleerd in LV, PPT en WB.
             - Fiche 4 & 8 (Triangulatie): Inhoudstafel op 2 niveaus (1.1, 1.2...) moet letterlijk (elk woord en cijfer) identiek zijn in de Wat-kolom, Hoe-kolom, linkerkolom van de PPT en op het WB.
             - Fiche 5 (Lesdoelen): In eigen woorden (kennis/inzicht, vaardigheden, attitudes) met observeerbare handeling en inhoud, op de juiste plaats gekoppeld in kolom 2.
@@ -823,8 +853,9 @@
             [Schrijf hier een korte, warme en motiverende alinea waarin je de sterke rode draad benoemt en de belangrijkste focuspunten samenvat.]
 
             ### [Kleurcode-tag] 1. Inhoudelijke Expertise & Bronnen (Fiche 2)
-            * **Observatie:** [Concrete analyse met verwijzing naar bronnen/pagina's]
-            * **Tip voor de draft:** [Concrete, coachende feed-forward]
+            * **Observatie:** [Bespreek eerst de inhoudelijke historische expertise in de les en het correcte gebruik van primaire/secundaire bronnen. Ga daarna standaard en expliciet in op: (A) de hoeveelheid bronnen, (B) het aantal geconsulteerde leermethodes/handboeken, (C) de kwaliteit van de bronnen, en (D) de correctheid van de APA-notering.]
+            * **Aan te passen elementen:** [Som hier heel concreet op wat de student moet aanpassen voor (A) Aantal bronnen, (B) Geconsulteerde leermethodes, (C) Kwaliteit van de bronnen, en (D) APA-notering.]
+            * **Tip voor de draft:** [Concrete, coachende feed-forward over de inhoudelijke expertise en het bronnengebruik in de les]
 
             ### [Kleurcode-tag] 2. De Onderzoeksvraag (Fiche 3)
             * **Observatie:** [Concrete analyse en vergelijking formulering tussen LV, PPT en WB]
