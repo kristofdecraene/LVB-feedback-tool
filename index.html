@@ -712,7 +712,7 @@
         return container.innerHTML;
     }
 
-    // Robuuste API-aanroep (volledig ongewijzigd)
+    // Robuuste API-aanroep
     async function callGeminiWithRetry(apiKey, payload) {
         const loadingText = document.getElementById("loading-text");
         const primaryModel = "models/gemini-3.8-flash";
@@ -834,13 +834,22 @@
               (B) Of er voldoende leermethodes (schoolhandboeken geschiedenis, minstens 2 volgens Fiche 2) geconsulteerd zijn;
               (C) Of de geraadpleegde bronnen voldoende kwalitatief en wetenschappelijk/vakdidactisch betrouwbaar zijn (geen vluchtige fora, Pinterest, Reddit of louter AI);
               (D) Of de bronnen en leermethodes correct volgens de APA-normen genoteerd staan.
-            - Fiche 3: Uitdagende onderzoeksvraag (geen ja/nee) in eigen woorden, 1-op-1 identiek geformuleerd in LV, PPT en WB.
-            - Fiche 4 & 8 (Triangulatie): Inhoudstafel op 2 niveaus (1.1, 1.2...) moet letterlijk (elk woord en cijfer) identiek zijn in de Wat-kolom, Hoe-kolom, linkerkolom van de PPT en op het WB.
+            - Fiche 3 (Onderzoeksvraag): De OV MOET expliciet een link met het heden of de leefwereld bevatten. Beoordeel streng. Indien de OV ontbreekt of onvoldoende is, is dit een breekpunt (Cruciaal Werkpunt). Formuleer bij Verfijning of Werkpunt altijd zelf een 'Suggestie voor een betere onderzoeksvraag' die wel aan alle regels voldoet (uitdagend, geen ja/nee, link met heden). Als je oordeelt dat het een Cruciaal Werkpunt is, vermeld dan letterlijk deze zin in je feedback: "Dit is een absolute basis voor je les en een breekpunt voor je stage."
+            - Fiche 4 & 8 (Lesstructuur & Triangulatie): 
+              (A) De structuur MOET logisch opgebouwd zijn in twee niveaus (bv. 1.1, 1.2). 
+              (B) Deze structuur mag UITSLUITEND inhoudelijke titels bevatten. Verwijs hier nooit naar didactische werkvormen, groepswerk of bronnummers. 
+              (C) De inhoudstafel moet 1-op-1 identiek doorgetrokken worden in de Wat-kolom, Hoe-kolom, linkerkolom van de PPT en op het WB. Als je in punt 2 een nieuwe Onderzoeksvraag hebt gesuggereerd, baseer je 'Voorstel voor een betere structuur' in de tip hier dan rechtstreeks op die nieuwe OV.
             - Fiche 5 (Lesdoelen): In eigen woorden (kennis/inzicht, vaardigheden, attitudes) met observeerbare handeling en inhoud, op de juiste plaats gekoppeld in kolom 2.
-            - Fiche 4 (Wat-kolom): Volledig uitgeschreven in doorlopende tekst/zinnen, zonder verwijzing naar werkvormen of bronnummers.
-            - Fiche 6 & 7 (Hoe-kolom & Timing): Systematische bronnenbehandeling via C-T-I. Tel alle deelminuten in de Hoe-kolom op en controleer of de les binnen de geplande lestijd past.
-            - Fiche 8 (Werkblad): Bevat onderzoeksvraag bovenaan, korte verhalende bindteksten tussen titels/opdrachten, alle niet-handboekbronnen en voldoende schrijfruimte.
-            - Fiche 8 (Presentatie): Functie 1 Structureren (linkerkolom bouwt op met kleurmarkering). Functie 2 Visualiseren (1 bron zo groot mogelijk per dia, geen lange leesteksten op slides). Functie 3 Controleren (verbetersleutel/antwoorden tonen). Check op resttekst of typfouten.
+            - Fiche 4 (Wat-kolom): Strikte scheiding: hier hoort ENKEL historische leerinhoud (in doorlopende tekst/zinnen) en de titels uit de structuur. Werkvormen horen hier NIET thuis, die moeten naar de Hoe-kolom.
+            - Fiche 6 & 7 (Hoe-kolom & Variatie): Focus hier expliciet op: 
+              (A) Werkvormen die de beoogde lesdoelen effectief realiseren; 
+              (B) Voldoende variatie in de werkvormen; 
+              (C) Gerichte vraagstelling zonder 'raad- of gokvragen'. Studenten moeten gericht kunnen antwoorden op basis van de aangereikte informatie. Het ontbreken van verwachte antwoorden bij de gerichte vragen is een gemiste kans (beoordeel dit als 'Verfijning mogelijk'). 
+              (D) Systematische bronnenbehandeling via de stappen Contextualisering - Translatie - Interpretatie (C-T-I).
+            - Fiche 8 (Werkblad): Bevat onderzoeksvraag bovenaan, korte verhalende bindteksten tussen titels/opdrachten, alle niet-handboekbronnen en voldoende schrijfruimte volgens het stappenplan.
+            - Fiche 8 (Presentatie): 
+              (A) Check of de drie functies (Structureren, Visualiseren, Controleren) aan bod komen. 
+              (B) Focus expliciet op de graduele opbouw via de vaste linkerzijbalk (hoofdstukken lichten stap voor stap op).
 
             VERPLICHTE OUTPUTSTRUCTUUR (volg dit exact):
 
@@ -854,27 +863,29 @@
 
             ### [Kleurcode-tag] 1. Inhoudelijke Expertise & Bronnen (Fiche 2)
             * **Observatie:** [Bespreek eerst de inhoudelijke historische expertise in de les en het correcte gebruik van primaire/secundaire bronnen. Ga daarna standaard en expliciet in op: (A) de hoeveelheid bronnen, (B) het aantal geconsulteerde leermethodes/handboeken, (C) de kwaliteit van de bronnen, en (D) de correctheid van de APA-notering.]
-            * **Aan te passen elementen:** [Som hier heel concreet op wat de student moet aanpassen voor (A) Aantal bronnen, (B) Geconsulteerde leermethodes, (C) Kwaliteit van de bronnen, en (D) APA-notering.]
+            * **Aan te passen elementen (A-B-C-D):** [Som hier heel concreet op wat de student moet aanpassen voor (A) Aantal bronnen, (B) Geconsulteerde leermethodes, (C) Kwaliteit van de bronnen, en (D) APA-notering.]
             * **Tip voor de draft:** [Concrete, coachende feed-forward over de inhoudelijke expertise en het bronnengebruik in de les]
 
             ### [Kleurcode-tag] 2. De Onderzoeksvraag (Fiche 3)
-            * **Observatie:** [Concrete analyse en vergelijking formulering tussen LV, PPT en WB]
-            * **Tip voor de draft:** [Concrete feed-forward]
+            * **Observatie:** [Analyseer de OV op uitdaging, formulering op de 3 dragers én de link met het heden. Is het een Cruciaal Werkpunt? Voeg dan de zin "Dit is een absolute basis voor je les en een breekpunt voor je stage." toe.]
+            * **Tip voor de draft:** [Coachende tip.]
+            * **Suggestie voor een betere onderzoeksvraag:** [Voeg deze bullet enkel toe indien Verfijning of Werkpunt. Formuleer zelf een sterke OV mét heden-verleden-heden link.]
 
             ### [Kleurcode-tag] 3. Lesstructuur & Triangulatie (Fiche 4 & 8)
-            * **Observatie:** [Vergelijk titels/nummering exact tussen LV, PPT en WB]
-            * **Tip voor de draft:** [Concrete feed-forward]
+            * **Observatie:** [Controleer of de structuur twee niveaus heeft, uitsluitend uit inhoud bestaat (geen werkvormen), en 1-op-1 identiek is doorgetrokken in LV, PPT en WB.]
+            * **Tip voor de draft:** [Coachende tip.]
+            * **Voorstel voor een betere structuur:** [Voeg deze bullet enkel toe indien Verfijning of Werkpunt. Bouw dit voorstel op rond de (eventueel nieuw gesuggereerde) onderzoeksvraag uit punt 2.]
 
             ### [Kleurcode-tag] 4. Lesdoelen (Fiche 5)
             * **Observatie:** [Concrete analyse van driedeling, formulering en koppeling aan LPD's]
             * **Tip voor de draft:** [Concrete feed-forward]
 
             ### [Kleurcode-tag] 5. De Wat-kolom (Fiche 4)
-            * **Observatie:** [Concrete analyse van volledigheid en doorlopende tekstvorm]
+            * **Observatie:** [Controleer streng of hier enkel historische leerinhoud (in zinnen) en titels uit de structuur staan, en absoluut géén werkvormen.]
             * **Tip voor de draft:** [Concrete feed-forward]
 
             ### [Kleurcode-tag] 6. De Hoe-kolom: Didactische Kern, Timing & Bronnenbehandeling (Fiche 6 & 7)
-            * **Observatie:** [Analyseer C-T-I, variatie en tel de minuten in platte tekst op]
+            * **Observatie:** [Beoordeel de variatie, of de werkvormen de doelen dienen, en check C-T-I. Wijs raad- of gokvragen streng af. Wijs het ontbreken van verwachte leerlingenantwoorden aan als 'Verfijning mogelijk'.]
             * **Tip voor de draft:** [Concrete feed-forward]
 
             ### [Kleurcode-tag] 7. Het Werkblad (Fiche 8)
@@ -882,7 +893,7 @@
             * **Tip voor de draft:** [Concrete feed-forward]
 
             ### [Kleurcode-tag] 8. De Lespresentatie (Fiche 8)
-            * **Observatie:** [Check linkerkolom, tekstblokken op slides en controleerdia's]
+            * **Observatie:** [Check of de 3 functies aan bod komen. Focus expliciet op de graduele opbouw via de vaste linkerzijbalk.]
             * **Tip voor de draft:** [Concrete feed-forward]
 
             ### [VERFIJNING] 9. Extra tips uit de 35-puntenchecklist
