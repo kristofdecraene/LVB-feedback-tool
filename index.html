@@ -820,6 +820,12 @@
         resultContent.innerHTML = "";
 
         try {
+            // Dynamisch de actuele datum van de browser ophalen voor zowel de prompt als het rapport
+            const now = new Date();
+            const todayISO = now.toISOString().split('T')[0];
+            const todayFormatted = now.toLocaleDateString('nl-BE', { day: 'numeric', month: 'long', year: 'numeric' });
+            const currentYear = now.getFullYear();
+
             const b64_LV = await fileToBase64(fileLV);
             const b64_PPT = await fileToBase64(filePPT);
             let b64_WB = "";
@@ -851,6 +857,7 @@
             4. Wees uiterst concreet: verwijs naar exacte paginanummers, dianummers, bronnummers en korte citaten uit de documenten van de student.
             5. Afkortingen & Jargon: Onderwijstermen en -afkortingen zoals lln., lln, lk., lk, OLG, LV, PPT, WB, enz. zijn overal toegestaan zolang de betekenis duidelijk is. Reken dit NOOIT aan als een spelfout of tekortkoming.
             6. Helder taalgebruik voor studenten: Gebruik het woord "triangulatie" NOOIT in je feedbackrapport. Spreek altijd helder en concreet over "het consequent doortrekken van de lesstructuur" over de verschillende lesdocumenten heen.
+            7. Huidige datum & jaartallen in bronnen: De huidige datum van vandaag is ${todayFormatted} (${todayISO}). We leven momenteel in het jaar ${currentYear}. Beschouw publicatie-, auteursrecht- of raadpleegdata uit ${currentYear} (of eerder, tot en met ${todayFormatted}) NOOIT als toekomstdata of invoerfouten. Enkel data strikt ná ${todayFormatted} liggen in de toekomst.
 
             SPECIFIEKE REGEL VOOR MICROTEACHING & DOCENTINVOER:
             - ${studentContextRule}
@@ -868,7 +875,7 @@
               (A) Of er voldoende bronnen aanwezig zijn;
               (B) Of er voldoende leermethodes (schoolhandboeken geschiedenis, minstens 2 volgens Fiche 2) geconsulteerd zijn;
               (C) Of de geraadpleegde bronnen voldoende kwalitatief en wetenschappelijk/vakdidactisch betrouwbaar zijn (geen vluchtige fora, Pinterest, Reddit of louter AI);
-              (D) Of de bronnen en leermethodes correct volgens de APA-normen genoteerd staan.
+              (D) Of de bronnen en leermethodes correct volgens de APA-normen genoteerd staan. (Let op: vandaag is het ${todayFormatted}; bronnen of raadpleegdata uit ${currentYear} zijn volledig actueel en dus géén toekomstdata!)
             - Fiche 3 (Onderzoeksvraag): De OV MOET expliciet een link met het heden of de leefwereld bevatten. Beoordeel streng. Indien de OV ontbreekt of onvoldoende is, is dit een breekpunt (Cruciaal Werkpunt). Formuleer bij Verfijning of Werkpunt altijd zelf een 'Suggestie voor een betere onderzoeksvraag' die wel aan alle regels voldoet (uitdagend, geen ja/nee, link met heden). Als je oordeelt dat het een Cruciaal Werkpunt is, vermeld dan letterlijk deze zin in je feedback: "Dit is een absolute basis voor je les en een breekpunt voor je stage."
             - Fiche 4 & 8 (Lesstructuur: opbouw en consequent doortrekken): 
               (A) De structuur MOET logisch opgebouwd zijn in twee niveaus (bv. 1.1, 1.2). 
@@ -933,10 +940,10 @@
 
             ### [VERFIJNING] 9. Extra tips uit de 35-puntenchecklist
             * **Tijd- en ruimtesituering:** [Specifieke feedback op kaart/tijdlijn]
-            * **Taalverzorging & Lay-out:** [Specifieke spel- of tikfouten met exact paginanummer/dianummer vermelden. Geef géén opmerkingen over gangbare onderwijsafkortingen zoals lln. of OLG.]`;
+            * **Taalverzorging & Lay-out:** [Specifieke spel- of tikfouten met exact paginanummer/dianummer vermelden. Geef géén opmerkingen over gangbare onderwijsafkortingen zoals lln. of OLG, en beschouw jaartallen uit ${currentYear} tot en met ${todayFormatted} niet als foutief.]`;
 
             const payloadParts = [
-                { text: `Hier is het studentendossier. Context: ${stageLevel}. Opgegeven naam: ${studentNameInput || 'Haal uit PDF'}. Docentnotities: ${teacherNotes || 'Geen'}.\nBestand 1 (Lesvoorbereiding):` },
+                { text: `Huidige datum van vandaag: ${todayFormatted} (${todayISO}). Hier is het studentendossier. Context: ${stageLevel}. Opgegeven naam: ${studentNameInput || 'Haal uit PDF'}. Docentnotities: ${teacherNotes || 'Geen'}.\nBestand 1 (Lesvoorbereiding):` },
                 { inlineData: { mimeType: "application/pdf", data: b64_LV } },
                 { text: `Bestand 2 (Presentatie):` },
                 { inlineData: { mimeType: "application/pdf", data: b64_PPT } }
@@ -965,7 +972,6 @@
             // Vul de vaste hoofdingvelden in
             document.getElementById("header-main-title").textContent = `FEEDBACKRAPPORT LESVOORBEREIDING ${stageLevel}`;
             document.getElementById("header-evaluator").textContent = evaluatorName;
-            const todayISO = new Date().toISOString().split('T')[0];
             document.getElementById("header-date").textContent = todayISO;
 
             // Render de kaarten en bereken de ballonnenbalk
